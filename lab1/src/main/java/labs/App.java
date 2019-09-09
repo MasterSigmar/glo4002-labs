@@ -11,7 +11,7 @@ public class App
         TriageType doctorTriageType = TriageType.FIFO;
         TriageType radiologyTriageType = TriageType.FIFO;
 
-        // Clinic clinic = new Clinic(...)
-        // clinic.triagePatient("John", 4, VisibleSymptom.MIGRAINE);
+        Clinic clinic = new Clinic();
+        clinic.triagePatient("John", 4, VisibleSymptom.MIGRAINE);
     }
 }
