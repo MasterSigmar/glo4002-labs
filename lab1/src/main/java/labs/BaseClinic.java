@@ -3,7 +3,7 @@ package labs;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseClinic {
+public abstract class BaseClinic {
 
   private TriageType _triageType;
   private static final int _triageThreshold = 5;
@@ -20,6 +20,8 @@ public class BaseClinic {
   }
 
   public void triagePatient(String name, int gravity, VisibleSymptom visibleSymptom) {
+
+    if(gravity == 1) return;
 
     switch (_triageType) {
       case FIFO:

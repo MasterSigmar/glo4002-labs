@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class BaseClinicTest {
+class ClinicTest {
   private String _defaultName = "default";
   private int _defaultGravity = 3;
   private VisibleSymptom _defaultVisibleSymptom = VisibleSymptom.MIGRAINE;
@@ -13,7 +13,7 @@ class BaseClinicTest {
   @Test
   void triagePatient_GivenPatientHasMigraine_WhenCalled_ShouldAddPatientAtEndOfMedicList() {
     // Initialize
-    BaseClinic clinic = new BaseClinic();
+    Clinic clinic = new Clinic();
     String expected = _defaultName;
 
     // Act
@@ -27,7 +27,7 @@ class BaseClinicTest {
   @Test
   void triagePatient_GivenPatientHasMigraine_WhenCalled_ShouldNotAddPatientToRadiology() {
     // Initialize
-    BaseClinic clinic = new BaseClinic();
+    Clinic clinic = new Clinic();
 
     // Act
     clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
@@ -40,7 +40,7 @@ class BaseClinicTest {
   void
       triagePatient_GivenPatientHasMigraineAlreadyInList_WhenCalled_ShouldAddNewPatientAtEndOfMedicList() {
     // Initialize
-    BaseClinic clinic = new BaseClinic();
+    Clinic clinic = new Clinic();
     clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
     String newPatient = "newPatient";
     String expected = newPatient;
@@ -57,7 +57,7 @@ class BaseClinicTest {
   void
       triagePatient_GivenPatientHasMigraineAlreadyInList_WhenCalled_ShouldNotAddNewPatientToRadiology() {
     // Initialize
-    BaseClinic clinic = new BaseClinic();
+    Clinic clinic = new Clinic();
     clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
     String newPatient = "newPatient";
 
@@ -71,7 +71,7 @@ class BaseClinicTest {
   @Test
   void triagePatient_GivenPatientHasSprain_WhenCalled_ShouldAddPatientAtEndOfMedicList() {
     // Initialize
-    BaseClinic clinic = new BaseClinic();
+    Clinic clinic = new Clinic();
     String expected = _defaultName;
 
     // Act
@@ -85,7 +85,7 @@ class BaseClinicTest {
   @Test
   void triagePatient_GivenPatientHasSprain_WhenCalled_ShouldAddPatientAtEndOfRadiologyList() {
     // Initialize
-    BaseClinic clinic = new BaseClinic();
+    Clinic clinic = new Clinic();
     String expected = _defaultName;
 
     // Act
@@ -99,7 +99,7 @@ class BaseClinicTest {
   @Test
   void triagePatient_GivenPatientHasBrokenBone_WhenCalled_ShouldAddPatientAtEndOfMedicList() {
     // Initialize
-    BaseClinic clinic = new BaseClinic();
+    Clinic clinic = new Clinic();
     String expected = _defaultName;
 
     // Act
@@ -113,7 +113,7 @@ class BaseClinicTest {
   @Test
   void triagePatient_GivenPatientHasBrokenBone_WhenCalled_ShouldAddPatientAtEndOfRadiologyList() {
     // Initialize
-    BaseClinic clinic = new BaseClinic();
+    Clinic clinic = new Clinic();
     String expected = _defaultName;
 
     // Act
@@ -128,7 +128,7 @@ class BaseClinicTest {
   void
       triagePatient_GivenPatientHasMigraineAlreadyInList_WhenCalled_ShouldAddNewPatientWithSprainAtEndOfMedicAndRadiologyList() {
     // Initialize
-    BaseClinic clinic = new BaseClinic();
+    Clinic clinic = new Clinic();
     clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
     String newPatient = "newPatient";
     String expected = newPatient;
@@ -145,7 +145,7 @@ class BaseClinicTest {
   void
       triagePatient_GivenPatientHasMigraineAlreadyInList_WhenCalled_ShouldAddNewPatientWithBrokenBoneAtEndOfMedicAndRadiologyList() {
     // Initialize
-    BaseClinic clinic = new BaseClinic();
+    Clinic clinic = new Clinic();
     clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
     String newPatient = "newPatient";
     String expected = newPatient;
@@ -162,7 +162,7 @@ class BaseClinicTest {
   void
       triagePatient_GivenPatientWithLowGravityAlreadyPresentInMedicList_WhenNewPatientWithHighGravity_ShouldAddNewPatientAtFrontOfMedicList() {
     // Initialize
-    BaseClinic clinic = new BaseClinic(TriageType.GRAVITY);
+    Clinic clinic = new Clinic(TriageType.GRAVITY);
     clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
 
     String newPatientName = "newPatientName";
@@ -181,7 +181,7 @@ class BaseClinicTest {
   void
       triagePatient_GivenPatientWithLowGravityAlreadyPresentInRadiologyList_WhenNewPatientWithHighGravity_ShouldAddNewPatientAtFrontOfRadiologyList() {
     // Initialize
-    BaseClinic clinic = new BaseClinic(TriageType.GRAVITY);
+    Clinic clinic = new Clinic(TriageType.GRAVITY);
     clinic.triagePatient(_defaultName, _defaultGravity, VisibleSymptom.BROKEN_BONE);
 
     String newPatientName = "newPatientName";
@@ -190,9 +190,27 @@ class BaseClinicTest {
 
     // Act
     clinic.triagePatient(newPatientName, newPatientGravity, VisibleSymptom.BROKEN_BONE);
-    String actual = clinic.get_radiologyPatientNames().get(0);
+    String actual = clinic.getFirstRadiologyPatientName();
 
     // Assert
     assertEquals(expected, actual);
+  }
+
+  @Test
+  void
+      triagePatient_GivenDefaultPatientAlreadyInList_WhenNewPatientGravityIs1_ShouldNotAddToLists() {
+    // Initialize
+    Clinic clinic = new Clinic();
+    clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
+
+    String newPatientName = "newPatientName";
+    int newPatientGravity = 1;
+
+    // Act
+    clinic.triagePatient(newPatientName, newPatientGravity, _defaultVisibleSymptom);
+
+    // Assert
+    assertFalse(clinic.get_medicPatientNames().contains(newPatientName));
+    assertFalse(clinic.get_radiologyPatientNames().contains(newPatientName));
   }
 }
