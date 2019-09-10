@@ -179,7 +179,7 @@ class ClinicTest {
 
   @Test
   void
-      triagePatient_GivenPatientWithLowGravityAlreadyPresentInRadiologyList_WhenNewPatientWithHighGravity_ShouldAddNewPatientAtEndOfRadiologyList() {
+      triagePatient_GivenPatientWithLowGravityAlreadyPresentInRadiologyList_WhenNewPatientWithHighGravity_ShouldAddNewPatientAtFrontOfRadiologyList() {
     // Initialize
     Clinic clinic = new Clinic(TriageType.GRAVITY);
     clinic.triagePatient(_defaultName, _defaultGravity, VisibleSymptom.BROKEN_BONE);
@@ -190,7 +190,7 @@ class ClinicTest {
 
     // Act
     clinic.triagePatient(newPatientName, newPatientGravity, VisibleSymptom.BROKEN_BONE);
-    String actual = clinic.getLastRadiologyPatientName();
+    String actual = clinic.get_radiologyPatientNames().get(0);
 
     // Assert
     assertEquals(expected, actual);

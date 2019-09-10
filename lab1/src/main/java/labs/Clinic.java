@@ -39,11 +39,18 @@ public class Clinic {
   }
 
   private void triagePatientGravity(String name, int gravity, VisibleSymptom visibleSymptom) {
-    if (gravity > _triageThreshold) MedicPatientNamesPushFront(name);
-    else MedicPatientNamesPushBack(name);
+    if (gravity > _triageThreshold) {
+        MedicPatientNamesPushFront(name);
+        if (visibleSymptom == VisibleSymptom.BROKEN_BONE || visibleSymptom == VisibleSymptom.SPRAIN)
+            RadiologyPatientNamesPushFront(name);
+    }
+    else {
+        MedicPatientNamesPushBack(name);
+        if (visibleSymptom == VisibleSymptom.BROKEN_BONE || visibleSymptom == VisibleSymptom.SPRAIN)
+            RadiologyPatientNamesPushBack(name);
+    }
 
-    if (visibleSymptom == VisibleSymptom.BROKEN_BONE || visibleSymptom == VisibleSymptom.SPRAIN)
-      RadiologyPatientNamesPushBack(name);
+
   }
 
   public List<String> get_medicPatientNames() {
