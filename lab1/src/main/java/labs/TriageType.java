@@ -1,5 +1,6 @@
 package labs;
 
 public enum TriageType {
-    FIFO
+    FIFO,
+    GRAVITY
 }

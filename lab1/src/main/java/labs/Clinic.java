@@ -5,39 +5,69 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Clinic {
-    private List<String> medicPatientNames = new ArrayList<String>();
-    private List<String> radiologyPatientNames = new ArrayList<String>();
+    private TriageType _triageType;
+    private static final int _triageThreshold = 5;
+
+    private List<String> _medicPatientNames = new ArrayList<String>();
+    private List<String> _radiologyPatientNames = new ArrayList<String>();
 
     public Clinic() {
+        _triageType = TriageType.FIFO;
+    }
+
+    public Clinic(TriageType triageType) {
+        _triageType = triageType;
     }
 
     public void triagePatient(String name, int gravity, VisibleSymptom visibleSymptom) {
-        medicPatientNames.add(name);
+
+        switch (_triageType){
+            case FIFO:
+                triagePatientFifo(name, visibleSymptom);
+                break;
+
+            case GRAVITY:
+                triagePatientGravity(name, gravity, visibleSymptom);
+                break;
+        }
+    }
+
+    private void triagePatientFifo(String name, VisibleSymptom visibleSymptom) {
+        _medicPatientNames.add(name);
 
         if (visibleSymptom == VisibleSymptom.BROKEN_BONE || visibleSymptom == VisibleSymptom.SPRAIN)
-            radiologyPatientNames.add(name);
-
+            _radiologyPatientNames.add(name);
     }
 
-    public List<String> getMedicPatientNames() {
-        return medicPatientNames;
+    private void triagePatientGravity(String name, int gravity, VisibleSymptom visibleSymptom) {
+        if (gravity > _triageThreshold)
+            _medicPatientNames.add(0, name);
+        else
+            _medicPatientNames.add(name);
+
+        if (visibleSymptom == VisibleSymptom.BROKEN_BONE || visibleSymptom == VisibleSymptom.SPRAIN)
+            _radiologyPatientNames.add(name);
+    }
+
+    public List<String> get_medicPatientNames() {
+        return _medicPatientNames;
     }
     public String getFirstMedicPatientName() {
-        return medicPatientNames.get(0);
+        return _medicPatientNames.get(0);
     }
     public String getLastMedicPatientName() {
-        int indexOfLastItem = medicPatientNames.size() - 1;
-        return medicPatientNames.get(indexOfLastItem);
+        int indexOfLastItem = _medicPatientNames.size() - 1;
+        return _medicPatientNames.get(indexOfLastItem);
     }
 
-    public List<String> getRadiologyPatientNames() {
-        return radiologyPatientNames;
+    public List<String> get_radiologyPatientNames() {
+        return _radiologyPatientNames;
     }
     public String getFirstRadiologyPatientName() {
-        return radiologyPatientNames.get(0);
+        return _radiologyPatientNames.get(0);
     }
     public String getLastRadiologyPatientName() {
-        int indexOfLastItem = radiologyPatientNames.size() - 1;
-        return radiologyPatientNames.get(indexOfLastItem);
+        int indexOfLastItem = _radiologyPatientNames.size() - 1;
+        return _radiologyPatientNames.get(indexOfLastItem);
     }
 }

@@ -1,29 +1,23 @@
 package labs;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ClinicTest {
-    private Clinic _clinic;
     private String _defaultName = "default";
     private int _defaultGravity = 3;
     private VisibleSymptom _defaultVisibleSymptom = VisibleSymptom.MIGRAINE;
 
-    @BeforeEach
-    void setUp() {
-        _clinic = new Clinic();
-    }
-
     @Test
     void triagePatient_GivenPatientHasMigraine_WhenCalled_ShouldAddPatientAtEndOfMedicList() {
         // Initialize
+        Clinic clinic = new Clinic();
         String expected = _defaultName;
 
         // Act
-        _clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
-        String actual = _clinic.getLastMedicPatientName();
+        clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
+        String actual = clinic.getLastMedicPatientName();
 
         // Assert
         assertEquals(expected, actual);
@@ -32,24 +26,26 @@ class ClinicTest {
     @Test
     void triagePatient_GivenPatientHasMigraine_WhenCalled_ShouldNotAddPatientToRadiology() {
         // Initialize
+        Clinic clinic = new Clinic();
 
         // Act
-        _clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
+        clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
 
         // Assert
-        assertFalse(_clinic.getRadiologyPatientNames().contains(_defaultName));
+        assertFalse(clinic.get_radiologyPatientNames().contains(_defaultName));
     }
 
     @Test
     void triagePatient_GivenPatientHasMigraineAlreadyInList_WhenCalled_ShouldAddNewPatientAtEndOfMedicList() {
         // Initialize
-        _clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
+        Clinic clinic = new Clinic();
+        clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
         String newPatient = "newPatient";
         String expected = newPatient;
 
         // Act
-        _clinic.triagePatient(newPatient, _defaultGravity, VisibleSymptom.FLU);
-        String actual = _clinic.getLastMedicPatientName();
+        clinic.triagePatient(newPatient, _defaultGravity, VisibleSymptom.FLU);
+        String actual = clinic.getLastMedicPatientName();
 
         // Assert
         assertEquals(expected, actual);
@@ -58,24 +54,26 @@ class ClinicTest {
     @Test
     void triagePatient_GivenPatientHasMigraineAlreadyInList_WhenCalled_ShouldNotAddNewPatientToRadiology() {
         // Initialize
-        _clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
+        Clinic clinic = new Clinic();
+        clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
         String newPatient = "newPatient";
 
         // Act
-        _clinic.triagePatient(newPatient, _defaultGravity, VisibleSymptom.FLU);
+        clinic.triagePatient(newPatient, _defaultGravity, VisibleSymptom.FLU);
 
         // Assert
-        assertFalse(_clinic.getRadiologyPatientNames().contains(_defaultName));
+        assertFalse(clinic.get_radiologyPatientNames().contains(_defaultName));
     }
 
     @Test
     void triagePatient_GivenPatientHasSprain_WhenCalled_ShouldAddPatientAtEndOfMedicList() {
         // Initialize
+        Clinic clinic = new Clinic();
         String expected = _defaultName;
 
         // Act
-        _clinic.triagePatient(_defaultName, _defaultGravity, VisibleSymptom.SPRAIN);
-        String actual = _clinic.getLastMedicPatientName();
+        clinic.triagePatient(_defaultName, _defaultGravity, VisibleSymptom.SPRAIN);
+        String actual = clinic.getLastMedicPatientName();
 
         // Assert
         assertEquals(expected, actual);
@@ -83,11 +81,12 @@ class ClinicTest {
     @Test
     void triagePatient_GivenPatientHasSprain_WhenCalled_ShouldAddPatientAtEndOfRadiologyList() {
         // Initialize
+        Clinic clinic = new Clinic();
         String expected = _defaultName;
 
         // Act
-        _clinic.triagePatient(_defaultName, _defaultGravity, VisibleSymptom.SPRAIN);
-        String actual = _clinic.getLastMedicPatientName();
+        clinic.triagePatient(_defaultName, _defaultGravity, VisibleSymptom.SPRAIN);
+        String actual = clinic.getLastMedicPatientName();
 
         // Assert
         assertEquals(expected, actual);
@@ -96,11 +95,12 @@ class ClinicTest {
     @Test
     void triagePatient_GivenPatientHasBrokenBone_WhenCalled_ShouldAddPatientAtEndOfMedicList() {
         // Initialize
+        Clinic clinic = new Clinic();
         String expected = _defaultName;
 
         // Act
-        _clinic.triagePatient(_defaultName, _defaultGravity, VisibleSymptom.BROKEN_BONE);
-        String actual = _clinic.getLastMedicPatientName();
+        clinic.triagePatient(_defaultName, _defaultGravity, VisibleSymptom.BROKEN_BONE);
+        String actual = clinic.getLastMedicPatientName();
 
         // Assert
         assertEquals(expected, actual);
@@ -108,45 +108,83 @@ class ClinicTest {
     @Test
     void triagePatient_GivenPatientHasBrokenBone_WhenCalled_ShouldAddPatientAtEndOfRadiologyList() {
         // Initialize
+        Clinic clinic = new Clinic();
         String expected = _defaultName;
 
         // Act
-        _clinic.triagePatient(_defaultName, _defaultGravity, VisibleSymptom.BROKEN_BONE);
-        String actual = _clinic.getLastMedicPatientName();
+        clinic.triagePatient(_defaultName, _defaultGravity, VisibleSymptom.BROKEN_BONE);
+        String actual = clinic.getLastMedicPatientName();
 
         // Assert
         assertEquals(expected, actual);
     }
 
-
-
     @Test
     void triagePatient_GivenPatientHasMigraineAlreadyInList_WhenCalled_ShouldAddNewPatientWithSprainAtEndOfMedicAndRadiologyList() {
         // Initialize
-        _clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
+        Clinic clinic = new Clinic();
+        clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
         String newPatient = "newPatient";
         String expected = newPatient;
 
         // Act
-        _clinic.triagePatient(newPatient, _defaultGravity, VisibleSymptom.SPRAIN);
+        clinic.triagePatient(newPatient, _defaultGravity, VisibleSymptom.SPRAIN);
 
         // Assert
-        assertEquals(expected, _clinic.getLastMedicPatientName());
-        assertEquals(expected, _clinic.getLastRadiologyPatientName());
+        assertEquals(expected, clinic.getLastMedicPatientName());
+        assertEquals(expected, clinic.getLastRadiologyPatientName());
     }
 
     @Test
     void triagePatient_GivenPatientHasMigraineAlreadyInList_WhenCalled_ShouldAddNewPatientWithBrokenBoneAtEndOfMedicAndRadiologyList() {
         // Initialize
-        _clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
+        Clinic clinic = new Clinic();
+        clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
         String newPatient = "newPatient";
         String expected = newPatient;
 
         // Act
-        _clinic.triagePatient(newPatient, _defaultGravity, VisibleSymptom.BROKEN_BONE);
+        clinic.triagePatient(newPatient, _defaultGravity, VisibleSymptom.BROKEN_BONE);
 
         // Assert
-        assertEquals(expected, _clinic.getLastMedicPatientName());
-        assertEquals(expected, _clinic.getLastRadiologyPatientName());
+        assertEquals(expected, clinic.getLastMedicPatientName());
+        assertEquals(expected, clinic.getLastRadiologyPatientName());
     }
+
+    @Test
+    void triagePatient_GivenPatientWithLowGravityAlreadyPresentInMedicList_WhenNewPatientWithHighGravity_ShouldAddNewPatientAtFrontOfMedicList() {
+        // Initialize
+        Clinic clinic = new Clinic(TriageType.GRAVITY);
+        clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
+
+        String newPatientName = "newPatientName";
+        int newPatientGravity = 7;
+        String expected = newPatientName;
+
+        // Act
+        clinic.triagePatient(newPatientName, newPatientGravity, _defaultVisibleSymptom);
+        String actual = clinic.getFirstMedicPatientName();
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void triagePatient_GivenPatientWithLowGravityAlreadyPresentInRadiologyList_WhenNewPatientWithHighGravity_ShouldAddNewPatientAtEndOfRadiologyList() {
+        // Initialize
+        Clinic clinic = new Clinic(TriageType.GRAVITY);
+        clinic.triagePatient(_defaultName, _defaultGravity, VisibleSymptom.BROKEN_BONE);
+
+        String newPatientName = "newPatientName";
+        int newPatientGravity = 7;
+        String expected = newPatientName;
+
+        // Act
+        clinic.triagePatient(newPatientName, newPatientGravity, VisibleSymptom.BROKEN_BONE);
+        String actual = clinic.getLastRadiologyPatientName();
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
 }
