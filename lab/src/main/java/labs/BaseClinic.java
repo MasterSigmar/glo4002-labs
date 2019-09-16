@@ -5,9 +5,8 @@ import java.util.List;
 
 public abstract class BaseClinic {
 
-  private TriageType _triageType;
   private static final int _triageThreshold = 5;
-
+  private TriageType _triageType;
   private List<String> _medicPatientNames = new ArrayList<String>();
   private List<String> _radiologyPatientNames = new ArrayList<String>();
 

@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 class ClinicTest {
   private String _defaultName = "default";
   private int _defaultGravity = 3;
-  private VisibleSymptom _defaultVisibleSymptom = VisibleSymptom.MIGRAINE;
+  private VisibleSymptom _defaultVisibleSymptom = VisibleSymptom.FLU;
 
   @Test
   void triagePatient_GivenPatientHasMigraine_WhenCalled_ShouldAddPatientAtEndOfMedicList() {
