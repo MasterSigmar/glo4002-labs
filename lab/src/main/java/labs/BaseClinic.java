@@ -21,36 +21,31 @@ public abstract class BaseClinic {
 
   public void triagePatient(String name, int gravity, VisibleSymptom visibleSymptom) {
 
-    if(gravity == 1) return;
+    if (isGravityTooLow(gravity)) return;
 
     switch (_triageType) {
       case FIFO:
-        triagePatientFifo(name, visibleSymptom);
+        PushBack(name, visibleSymptom);
         break;
 
       case GRAVITY:
-        triagePatientGravity(name, gravity, visibleSymptom);
+        if (isHighPriority(gravity)) {
+          PushFront(name, visibleSymptom);
+        } else {
+          PushBack(name, visibleSymptom);
+        }
         break;
     }
   }
 
-  private void triagePatientFifo(String name, VisibleSymptom visibleSymptom) {
+  private void PushBack(String name, VisibleSymptom visibleSymptom) {
     MedicPatientNamesPushBack(name);
-
-    if (visibleSymptom == VisibleSymptom.BROKEN_BONE || visibleSymptom == VisibleSymptom.SPRAIN)
-      RadiologyPatientNamesPushBack(name);
+    if (isRadiologyPatient(visibleSymptom)) RadiologyPatientNamesPushBack(name);
   }
 
-  private void triagePatientGravity(String name, int gravity, VisibleSymptom visibleSymptom) {
-    if (gravity > _triageThreshold) {
-      MedicPatientNamesPushFront(name);
-      if (visibleSymptom == VisibleSymptom.BROKEN_BONE || visibleSymptom == VisibleSymptom.SPRAIN)
-        RadiologyPatientNamesPushFront(name);
-    } else {
-      MedicPatientNamesPushBack(name);
-      if (visibleSymptom == VisibleSymptom.BROKEN_BONE || visibleSymptom == VisibleSymptom.SPRAIN)
-        RadiologyPatientNamesPushBack(name);
-    }
+  private void PushFront(String name, VisibleSymptom visibleSymptom) {
+    MedicPatientNamesPushFront(name);
+    if (isRadiologyPatient(visibleSymptom)) RadiologyPatientNamesPushFront(name);
   }
 
   public List<String> get_medicPatientNames() {
@@ -79,19 +74,31 @@ public abstract class BaseClinic {
     return _radiologyPatientNames.get(indexOfLastItem);
   }
 
-  public void MedicPatientNamesPushBack(String name) {
+  private void MedicPatientNamesPushBack(String name) {
     _medicPatientNames.add(name);
   }
 
-  public void MedicPatientNamesPushFront(String name) {
+  private void MedicPatientNamesPushFront(String name) {
     _medicPatientNames.add(0, name);
   }
 
-  public void RadiologyPatientNamesPushBack(String name) {
+  private void RadiologyPatientNamesPushBack(String name) {
     _radiologyPatientNames.add(name);
   }
 
-  public void RadiologyPatientNamesPushFront(String name) {
+  private void RadiologyPatientNamesPushFront(String name) {
     _radiologyPatientNames.add(0, name);
+  }
+
+  private boolean isGravityTooLow(int gravity) {
+    return gravity == 1;
+  }
+
+  private boolean isRadiologyPatient(VisibleSymptom visibleSymptom) {
+    return visibleSymptom == VisibleSymptom.BROKEN_BONE || visibleSymptom == VisibleSymptom.SPRAIN;
+  }
+
+  private boolean isHighPriority(int gravity) {
+    return gravity > _triageThreshold;
   }
 }
