@@ -5,29 +5,11 @@ import java.util.List;
 
 public abstract class BaseClinic {
 
+  protected TriageType TriageType = labs.TriageType.FIFO;
+
   private static final int _triageThreshold = 5;
   private List<String> _medicPatientNames = new ArrayList<String>();
   private List<String> _radiologyPatientNames = new ArrayList<String>();
-  private TriageType _triageType = TriageType.FIFO;
-
-  protected void triagePatient(String name, int gravity, VisibleSymptom visibleSymptom) {
-
-    if (isGravityTooLow(gravity)) return;
-
-    switch (_triageType) {
-      case FIFO:
-        PushBack(name, visibleSymptom);
-        break;
-
-      case GRAVITY:
-        if (isHighPriority(gravity)) {
-          PushFront(name, visibleSymptom);
-        } else {
-          PushBack(name, visibleSymptom);
-        }
-        break;
-    }
-  }
 
   protected List<String> get_medicPatientNames() {
     return _medicPatientNames;
@@ -55,15 +37,11 @@ public abstract class BaseClinic {
     return _radiologyPatientNames.get(indexOfLastItem);
   }
 
-  protected void set_triageType(TriageType _triageType) {
-    this._triageType = _triageType;
-  }
-
-  private void MedicPatientNamesPushBack(String name) {
+  protected void MedicPatientNamesPushBack(String name) {
     _medicPatientNames.add(name);
   }
 
-  private void MedicPatientNamesPushFront(String name) {
+  protected void MedicPatientNamesPushFront(String name) {
     _medicPatientNames.add(0, name);
   }
 
@@ -93,7 +71,7 @@ public abstract class BaseClinic {
     return visibleSymptom == VisibleSymptom.BROKEN_BONE || visibleSymptom == VisibleSymptom.SPRAIN;
   }
 
-  private boolean isHighPriority(int gravity) {
+  protected boolean isHighPriority(int gravity) {
     return gravity > _triageThreshold;
   }
 }
