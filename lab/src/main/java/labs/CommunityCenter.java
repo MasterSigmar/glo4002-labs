@@ -2,11 +2,10 @@ package labs;
 
 public class CommunityCenter extends BaseClinic {
   public CommunityCenter() {
-    super();
   }
 
   public CommunityCenter(TriageType triageType) {
-    super(triageType);
+    set_triageType(triageType);
   }
 
   public void triagePatient(String name, int gravity) {

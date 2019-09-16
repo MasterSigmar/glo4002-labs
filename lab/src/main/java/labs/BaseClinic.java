@@ -10,13 +10,7 @@ public abstract class BaseClinic {
   private List<String> _radiologyPatientNames = new ArrayList<String>();
   private TriageType _triageType = TriageType.FIFO;
 
-  public BaseClinic() {}
-
-  public BaseClinic(TriageType triageType) {
-    _triageType = triageType;
-  }
-
-  public void triagePatient(String name, int gravity, VisibleSymptom visibleSymptom) {
+  protected void triagePatient(String name, int gravity, VisibleSymptom visibleSymptom) {
 
     if (isGravityTooLow(gravity)) return;
 
@@ -35,40 +29,34 @@ public abstract class BaseClinic {
     }
   }
 
-  private void PushBack(String name, VisibleSymptom visibleSymptom) {
-    MedicPatientNamesPushBack(name);
-    if (isRadiologyPatient(visibleSymptom)) RadiologyPatientNamesPushBack(name);
-  }
-
-  private void PushFront(String name, VisibleSymptom visibleSymptom) {
-    MedicPatientNamesPushFront(name);
-    if (isRadiologyPatient(visibleSymptom)) RadiologyPatientNamesPushFront(name);
-  }
-
-  public List<String> get_medicPatientNames() {
+  protected List<String> get_medicPatientNames() {
     return _medicPatientNames;
   }
 
-  public String getFirstMedicPatientName() {
+  protected String getFirstMedicPatientName() {
     return _medicPatientNames.get(0);
   }
 
-  public String getLastMedicPatientName() {
+  protected String getLastMedicPatientName() {
     int indexOfLastItem = _medicPatientNames.size() - 1;
     return _medicPatientNames.get(indexOfLastItem);
   }
 
-  public List<String> get_radiologyPatientNames() {
+  protected List<String> get_radiologyPatientNames() {
     return _radiologyPatientNames;
   }
 
-  public String getFirstRadiologyPatientName() {
+  protected String getFirstRadiologyPatientName() {
     return _radiologyPatientNames.get(0);
   }
 
-  public String getLastRadiologyPatientName() {
+  protected String getLastRadiologyPatientName() {
     int indexOfLastItem = _radiologyPatientNames.size() - 1;
     return _radiologyPatientNames.get(indexOfLastItem);
+  }
+
+  protected void set_triageType(TriageType _triageType) {
+    this._triageType = _triageType;
   }
 
   private void MedicPatientNamesPushBack(String name) {
@@ -87,7 +75,17 @@ public abstract class BaseClinic {
     _radiologyPatientNames.add(0, name);
   }
 
-  private boolean isGravityTooLow(int gravity) {
+  protected void PushBack(String name, VisibleSymptom visibleSymptom) {
+    MedicPatientNamesPushBack(name);
+    if (isRadiologyPatient(visibleSymptom)) RadiologyPatientNamesPushBack(name);
+  }
+
+  protected void PushFront(String name, VisibleSymptom visibleSymptom) {
+    MedicPatientNamesPushFront(name);
+    if (isRadiologyPatient(visibleSymptom)) RadiologyPatientNamesPushFront(name);
+  }
+
+  protected boolean isGravityTooLow(int gravity) {
     return gravity == 1;
   }
 
