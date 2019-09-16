@@ -37,6 +37,14 @@ public abstract class BaseClinic {
     return _radiologyPatientNames.get(indexOfLastItem);
   }
 
+  protected boolean isInMedicList(String name){
+    return _medicPatientNames.contains(name);
+  }
+
+  protected boolean isInRadiologyList(String name){
+    return _radiologyPatientNames.contains(name);
+  }
+
   protected void MedicPatientNamesPushBack(String name) {
     _medicPatientNames.add(name);
   }

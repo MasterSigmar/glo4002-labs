@@ -33,7 +33,7 @@ class ClinicTest {
     clinic.triagePatient(_defaultName, _defaultGravity, _defaultVisibleSymptom);
 
     // Assert
-    assertFalse(clinic.get_radiologyPatientNames().contains(_defaultName));
+    assertFalse(clinic.isInRadiologyList(_defaultName));
   }
 
   @Test
@@ -65,7 +65,7 @@ class ClinicTest {
     clinic.triagePatient(newPatient, _defaultGravity, VisibleSymptom.FLU);
 
     // Assert
-    assertFalse(clinic.get_radiologyPatientNames().contains(_defaultName));
+    assertFalse(clinic.isInRadiologyList(_defaultName));
   }
 
   @Test
@@ -210,7 +210,7 @@ class ClinicTest {
     clinic.triagePatient(newPatientName, newPatientGravity, _defaultVisibleSymptom);
 
     // Assert
-    assertFalse(clinic.get_medicPatientNames().contains(newPatientName));
-    assertFalse(clinic.get_radiologyPatientNames().contains(newPatientName));
+    assertFalse(clinic.isInMedicList(newPatientName));
+    assertFalse(clinic.isInRadiologyList(newPatientName));
   }
 }
